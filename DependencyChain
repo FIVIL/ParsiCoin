@@ -4,12 +4,12 @@ Base :{
     Project:{}
     }
 PVM :{
-    NUget:{Json.net},
+    NUget:{},
     SDK:{netStandard},
     Project:{Base}
     }
 ParsiCoin :{
-    NUget:{NbitCoin,Json.net},
+    NUget:{},
     SDK:{netStandard},
     Project:{Base,PVM}
     }
