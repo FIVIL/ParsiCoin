@@ -1,0 +1,15 @@
+Base :{
+    Nuget:{NbitCoin,Json.net},
+    SDK:{netStandard},
+    Project:{}
+    }
+PVM :{
+    NUget:{Json.net},
+    SDK:{netStandard},
+    Project:{Base}
+    }
+ParsiCoin :{
+    NUget:{NbitCoin,Json.net},
+    SDK:{netStandard},
+    Project:{Base,PVM}
+    }
