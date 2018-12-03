@@ -68,6 +68,7 @@ namespace ParsiCoin.PVM
             if (_mem.ContainsKey(r))
             {
                 s = _mem[r];
+                _mem.Remove(r);
             }
             else
             {
