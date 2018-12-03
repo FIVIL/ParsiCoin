@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ParsiCoin.Base.Utilities;
 
 namespace ParsiCoin.PVM
 {
     public class Stack
     {
         private readonly byte[][] _data;
+        private readonly Memory _mem;
         private int SP;
         public Stack()
         {
@@ -15,6 +17,7 @@ namespace ParsiCoin.PVM
             {
                 _data[i] = new byte[64];
             }
+            _mem = new Memory();
             SP = 0;
         }
         public int SetSp(int value)
@@ -31,6 +34,18 @@ namespace ParsiCoin.PVM
             _data[SP] = r;
             return true;
         }
+        public bool Push(string s)
+        {
+            var r = s.ToByteArray();
+            if (r.Length > 64)
+            {
+                return Push(_mem.Add(s));
+            }
+            else
+            {
+                return Push(r);
+            }
+        }
         public bool Pop(out byte[] r)
         {
             if (SP < 0)
@@ -40,6 +55,24 @@ namespace ParsiCoin.PVM
             }
             r = _data[SP];
             SP--;
+            return true;
+        }
+        public bool Pop(out string s)
+        {
+            var b = Pop(out byte[] r);
+            if (!b)
+            {
+                s = string.Empty;
+                return b;
+            }
+            if (_mem.ContainsKey(r))
+            {
+                s = _mem[r];
+            }
+            else
+            {
+                s = r.FromByteArray();
+            }
             return true;
         }
     }
