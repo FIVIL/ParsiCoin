@@ -18,7 +18,7 @@ namespace ParsiCoin.PVM
                 _data[i] = new byte[64];
             }
             _mem = new Memory();
-            SP = 0;
+            SP = -1;
         }
         public int SetSp(int value)
         {
