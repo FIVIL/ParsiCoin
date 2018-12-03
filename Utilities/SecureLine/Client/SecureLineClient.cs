@@ -16,9 +16,11 @@ namespace ParsiCoin.Base.SecureLine.Client
             _rsaKeyXchC = new RsaKeyExchClient();
         }
 
-        public void InitaiteServer(Func<string, string> send)
+        public string PubKey { get => _rsaKeyXchC.PubKey; }
+
+        public void InitaiteServer(string send)
         {
-            _aes = _rsaKeyXchC.ImportPassword(send(_rsaKeyXchC.PubKey));
+            _aes = _rsaKeyXchC.ImportPassword(send);
         }
 
         public string Encrypt(string message)

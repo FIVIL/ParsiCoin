@@ -23,14 +23,17 @@ namespace ParsiCoin.Base.Crypto
             _aes.IV = pdb.GetBytes(16);
             pdb.Dispose();
         }
-        public AES() : this(new object())
+        public AES(Guid PassWord) : this(new object())
         {
-            _password = Guid.NewGuid().ToByteArray();
+            _password = PassWord.ToByteArray();
 
             Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(_password, _salt, _iterationCount);
             _aes.Key = pdb.GetBytes(32);
             _aes.IV = pdb.GetBytes(16);
             pdb.Dispose();
+        }
+        public AES() : this(Guid.NewGuid())
+        {
         }
         private AES(object obj)
         {

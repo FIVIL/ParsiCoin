@@ -24,7 +24,7 @@ namespace ParsiCoin.Base.SecureLine.Client
         public AES ImportPassword(string Pass)
         {
             var key = Convert.FromBase64String(Pass);
-            var K = System.Text.Encoding.ASCII.GetString(_rsa.Decrypt(key, false));
+            var K = new Guid(_rsa.Decrypt(key, false));
             return new AES(K);
         }
 
