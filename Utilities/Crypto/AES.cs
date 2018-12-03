@@ -13,6 +13,7 @@ namespace ParsiCoin.Base.Crypto
         private readonly Aes _aes;
         private readonly byte[] _salt;
         private readonly int _iterationCount;
+        public byte[] PassWord { get => _password; }
         public AES(string PassWord) : this(new object())
         {
             _password = Utilities.Util.ToByteArray(PassWord);
