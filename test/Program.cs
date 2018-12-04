@@ -12,6 +12,13 @@ namespace test
     {
         static void Main(string[] args)
         {
+            
+            var s = new PUnite();
+            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ");
+            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamd Hamed ");
+            s.AddCommand(Commands.Eq);
+            s.AddCommand(Commands.IsOne);
+            Console.WriteLine(s.Process());
             Console.ReadKey();
         }
     }

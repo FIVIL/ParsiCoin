@@ -6,8 +6,6 @@ namespace ParsiCoin.PVM
 {
     public enum Commands
     {
-        Nop,
-        //
         Zero,
         One,
         //
@@ -19,7 +17,6 @@ namespace ParsiCoin.PVM
         //
         Dup,
         CheckSig,
-        Sign,
         //
         IsOne,
         IsZero,

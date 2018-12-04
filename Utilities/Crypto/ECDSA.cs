@@ -36,13 +36,25 @@ $"{_privateKey.ToBytes().ToBase58Check()} {_hdRoot.ChainCode.ToBase58Check()}".T
             }
             else
             {
-                var keys = key.ToByteArray(StringEncoding.Base85Check).FromByteArray().Split(' ');
-                _mnemonic = null;
-                _privateKey = new Key(keys[0].ToByteArray(StringEncoding.Base85Check));
-                _hdRoot = new ExtKey(_privateKey, keys[1].ToByteArray(StringEncoding.Base85Check));
-                _pubKey = _hdRoot.PrivateKey.PubKey;
-                _wordList = null;
-                OnlyPublic = false;
+                if (key.Split(' ').Length == 12)
+                {
+                    _mnemonic = new Mnemonic(key);
+                    _hdRoot = _mnemonic.DeriveExtKey();
+                    _privateKey = _hdRoot.PrivateKey;
+                    _pubKey = _privateKey.PubKey;
+                    _wordList = _mnemonic.Words;
+                    OnlyPublic = false;
+                }
+                else
+                {
+                    var keys = key.ToByteArray(StringEncoding.Base85Check).FromByteArray().Split(' ');
+                    _mnemonic = null;
+                    _privateKey = new Key(keys[0].ToByteArray(StringEncoding.Base85Check));
+                    _hdRoot = new ExtKey(_privateKey, keys[1].ToByteArray(StringEncoding.Base85Check));
+                    _pubKey = _hdRoot.PrivateKey.PubKey;
+                    _wordList = null;
+                    OnlyPublic = false;
+                }
             }
         }
         public ECDSA()
