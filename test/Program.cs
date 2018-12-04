@@ -14,8 +14,9 @@ namespace test
         {
             
             var s = new PUnite();
+            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ".ComputeHash().FromByteArray());
             s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ");
-            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamd Hamed ");
+            s.AddCommand(Commands.DoubleSHA512);
             s.AddCommand(Commands.Eq);
             s.AddCommand(Commands.IsOne);
             Console.WriteLine(s.Process());

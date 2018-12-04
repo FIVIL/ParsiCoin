@@ -31,7 +31,7 @@ namespace ParsiCoin.PVM
         {
             if (SP < -1) throw new ArgumentException();
             SP++;
-            _data[SP] = r;
+            _data[SP] = padding(r);
             return true;
         }
         public bool Push(string s)
@@ -75,6 +75,19 @@ namespace ParsiCoin.PVM
                 s = r.FromByteArray();
             }
             return true;
+        }
+        private byte[] padding(byte[] inp)
+        {
+            if (inp.Length < 64)
+            {
+                var res = new byte[64];
+                for (int i = 0; i < inp.Length; i++)
+                {
+                    res[i] = inp[i];
+                }
+                return res;
+            }
+            return inp;
         }
     }
 }

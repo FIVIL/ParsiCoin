@@ -42,36 +42,36 @@ namespace ParsiCoin.PVM
             {
                 _stack.Pop(out string data);
                 var data2 = data.ComputeHash(HashAlgorithms.MD5);
-                var data3 = new byte[64];
-                for (int i = 0; i < data2.Length; i++)
-                {
-                    data3[i] = data2[i];
-                }
-                _stack.Push(data3);
+                //var data3 = new byte[64];
+                //for (int i = 0; i < data2.Length; i++)
+                //{
+                //    data3[i] = data2[i];
+                //}
+                _stack.Push(data2);
                 return null;
             });
             _actions.Add(Commands.SHA256, () =>
             {
                 _stack.Pop(out string data);
                 var data2 = data.ComputeHash(HashAlgorithms.SHA256);
-                var data3 = new byte[64];
-                for (int i = 0; i < data2.Length; i++)
-                {
-                    data3[i] = data2[i];
-                }
-                _stack.Push(data3);
+                //var data3 = new byte[64];
+                //for (int i = 0; i < data2.Length; i++)
+                //{
+                //    data3[i] = data2[i];
+                //}
+                _stack.Push(data2);
                 return null;
             });
             _actions.Add(Commands.DoubleSHA256, () =>
             {
                 _stack.Pop(out string data);
                 var data2 = data.ComputeHash(HashAlgorithms.DoubleSHA256);
-                var data3 = new byte[64];
-                for (int i = 0; i < data2.Length; i++)
-                {
-                    data3[i] = data2[i];
-                }
-                _stack.Push(data3);
+                //var data3 = new byte[64];
+                //for (int i = 0; i < data2.Length; i++)
+                //{
+                //    data3[i] = data2[i];
+                //}
+                _stack.Push(data2);
                 return null;
             });
             _actions.Add(Commands.SHA512, () =>
