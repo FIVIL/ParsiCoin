@@ -163,5 +163,21 @@ namespace ParsiCoin.PVM
             return res;
         }
         public bool Push(string data) => _stack.Push(data);
+        public void Parser(string s)
+        {
+            var ss = s.Split(';');
+            foreach (var item in ss)
+            {
+                if (Enum.TryParse<Commands>(item, out var cm))
+                {
+                    AddCommand(cm);
+                }
+                else
+                {
+                    var p = item.ToByteArray(StringEncoding.Base85Check);
+                    Push(p.FromByteArray());
+                }
+            }
+        }
     }
 }

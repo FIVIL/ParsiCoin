@@ -14,11 +14,12 @@ namespace test
         {
             
             var s = new PUnite();
-            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ".ComputeHash().FromByteArray());
-            s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ");
-            s.AddCommand(Commands.DoubleSHA512);
-            s.AddCommand(Commands.Eq);
-            s.AddCommand(Commands.IsOne);
+            //s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ".ComputeHash().FromByteArray());
+            //s.Push("Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ");
+            //s.AddCommand(Commands.DoubleSHA512);
+            //s.AddCommand(Commands.Eq);
+            //s.AddCommand(Commands.IsOne);
+            s.Parser($"{"Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ".ComputeHash().ToBase58Check()};{"Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed Hamed ".ComputeHash().ToBase58Check()};Eq;IsOne");
             Console.WriteLine(s.Process());
             Console.ReadKey();
         }
