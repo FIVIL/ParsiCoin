@@ -4,6 +4,7 @@ using ParsiCoin.Base.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using System.Text;
 
 namespace ParsiCoin
@@ -29,6 +30,7 @@ namespace ParsiCoin
         public string IssuerPubKey { get; private set; }
         public string NodeHash { get; private set; }
 
+        public UInt64 Nonce { get; set; }
         #region ctor
         public Node(Node left, Node right, string message, string Issuer, Transaction tx = null)
         {
@@ -43,15 +45,18 @@ namespace ParsiCoin
             Tx = tx;
             TxHash = tx?.TxHash;
             IssuerPubKey = Issuer;
-            NodeHash = ComputeTxHash();
+            NodeHash = ComputeObjectHash();
+            Nonce = 0;
         }
         public Node()
         {
             ID = Guid.NewGuid();
         }
         [JsonConstructor]
-        public Node(Guid iD, Guid left, Guid right, string message, string issuerPubKey, Transaction tx, string txHash
-            , DateTime mintTime, DateTime publishTime, string leftHash, string rightHash, string nodeHash)
+        public Node(Guid iD, Guid left, Guid right, string message, string issuerPubKey,
+            Transaction tx, string txHash, UInt64 nonce
+            , DateTime mintTime, DateTime publishTime, string leftHash,
+            string rightHash, string nodeHash)
         {
             ID = iD;
             MintTime = mintTime;
@@ -66,11 +71,25 @@ namespace ParsiCoin
             NodeHash = nodeHash;
             PublishTime = publishTime;
         }
-        public string ComputeTxHash()
-            => $"{ID}-{MintTime}-{LeftHash}-{RightHash}-{Message.ComputeHashString()}-{TxHash}-{IssuerPubKey}".ComputeHashString();
+        public string ComputeObjectHash()
+        {
+            byte[] s = null;
+            do
+            {
+                s = $"{ID}-{MintTime}-{LeftHash}-{RightHash}-{Message.ComputeHashString()}-{TxHash}-{IssuerPubKey}-{Nonce}".ComputeHash();
+            } while (NodeHash.ToByteArray().CompareDiff());
+            return s.ToBase58Check();
+        }
 
         #endregion
         public bool Equal(IPICObject obj)
             => this.ToJson().ComputeHashString().Equals(obj.ToJson().ComputeHashString());
+        public bool Verify()
+        {
+            if (NodeHash != ComputeObjectHash()) return false;
+            if (NodeHash.ToByteArray().CompareDiff()) return false;
+            if (!Tx.ISSigntureVerified()) return false;
+            return true;
+        }
     }
 }

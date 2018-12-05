@@ -7,7 +7,7 @@ namespace ParsiCoin
 {
     public class Account : IPICObject
     {
-        public string ComputeTxHash()
+        public string ComputeObjectHash()
         {
             throw new NotImplementedException();
         }

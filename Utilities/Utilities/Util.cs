@@ -10,6 +10,30 @@ namespace ParsiCoin.Base.Utilities
         #region Props
         public static Random Rdn { get; set; } = new Random();
         public static string PrivateKey = string.Empty;
+        private static byte[] _diff = null;
+        public static int diffratio = 2;
+        public static byte diffpoint = 6;
+        public static byte[] Difficulty
+        {
+            get
+            {
+                if (_diff is null)
+                {
+                    var s = new byte[64];
+                    for (int i = 0; i < diffratio; i++)
+                    {
+                        s[i] = 0;
+                    }
+                    s[diffratio] = diffpoint;
+                    for (int i = diffratio + 1; i < 64; i++)
+                    {
+                        s[i] = 0xff;
+                    }
+                    _diff = s;
+                }
+                return _diff;
+            }
+        }
         #endregion
 
         #region StringEncoding
@@ -107,5 +131,14 @@ namespace ParsiCoin.Base.Utilities
         public static string ComputeHashString(this string s, HashAlgorithms algorithm = HashAlgorithms.DoubleSHA512)
             => FromByteArray(ComputeHash(ToByteArray(s), algorithm), StringEncoding.Base85Check);
         #endregion
+
+        public static bool CompareDiff(this byte[] targer)
+        {
+            for (int i = 0; i < targer.Length; i++)
+            {
+                if (targer[i] > Difficulty[i]) return false;
+            }
+            return true;
+        }
     }
 }

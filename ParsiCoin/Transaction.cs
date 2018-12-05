@@ -39,7 +39,7 @@ namespace ParsiCoin
             Reciepient = reciepient;
             Amount = amount;
             IsuueTime = DateTime.UtcNow;
-            TxHash = ComputeTxHash();
+            TxHash = ComputeObjectHash();
             //Signture = ec.Sign(TxHash).ToByteArray(StringEncoding.Base64).ToBase58Check();
             Signture = ec.Sign(TxHash);
             ScriptPubKey = $"{TxHash};{Signture};{TransactionIssuer}";
@@ -66,7 +66,7 @@ namespace ParsiCoin
         #endregion
         public bool ISSigntureVerified()
         {
-            if (TxHash == ComputeTxHash())
+            if (TxHash == ComputeObjectHash())
             {
                 //var ecdsa = new ECDSA(TransactionIssuer);
 
@@ -78,7 +78,7 @@ namespace ParsiCoin
             }
             return false;
         }
-        public string ComputeTxHash()
+        public string ComputeObjectHash()
             => $"{TransactionIssuer}-{Reciepient}-{Amount}-{IsuueTime}".ComputeHashString();
 
         public bool Equal(IPICObject obj)
