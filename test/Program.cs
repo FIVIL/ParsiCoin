@@ -15,22 +15,19 @@ namespace test
     {
         static void Main(string[] args)
         {
-            //var k = new ECDSA();
-            //var k2 = new ECDSA();
-            //Util.PrivateKey = k.GetWords;
-            //var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
-            //var tx2 = tx.ToJson().FromJson<Transaction>();
-            //Node n = new Node(new Node(), new Node(), "aaa", k.ExportPubKey, tx);
-            //var n2 = n.ToJson().FromJson<Node>();
-            //Console.WriteLine(n.ToJson(true));
-            //Console.WriteLine(n.Equal(n2));
-            var s = new Stopwatch();
-            s.Start();
-            int j = 0;
-            for (int i = 0; i < int.MaxValue; i++)
-            {
-                if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
-            }
+            var k = new ECDSA();
+            var k2 = new ECDSA();
+            Util.PrivateKey = k.GetWords;
+            var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
+            Console.WriteLine(tx.ISSigntureVerified());
+
+            //var s = new Stopwatch();
+            //s.Start();
+            //int j = 0;
+            //for (int i = 0; i < int.MaxValue; i++)
+            //{
+            //    if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
+            //}
             Console.ReadKey();
         }
     }
