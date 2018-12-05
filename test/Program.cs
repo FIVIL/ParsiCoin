@@ -17,8 +17,8 @@ namespace test
             var k2 = new ECDSA();
             Util.PrivateKey = k.GetWords;
             var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
-            Console.WriteLine(tx.ToJson(true));
-            Console.WriteLine(tx.ISSigntureVerified());
+            var tx2 = tx.ToJson().FromJson<Transaction>();
+            Console.WriteLine(tx.Equal(tx2));
             Console.ReadKey();
         }
     }

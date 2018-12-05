@@ -1,4 +1,5 @@
 ﻿using ParsiCoin.Base;
+using ParsiCoin.Base.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,5 +28,7 @@ namespace ParsiCoin
         public string IssuerPubKey { get; set; }
         public string NodeHash { get; set; }
 
+        public bool Equal(IPICObject obj)
+            => this.ToJson().ComputeHashString().Equals(obj.ToJson().ComputeHashString());
     }
 }

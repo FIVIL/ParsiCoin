@@ -46,9 +46,22 @@ namespace ParsiCoin
             ScriptSig = $"{ScriptPubKey};CheckSig;IsOne";
         }
         [JsonConstructor]
-        public Transaction()
+        public Transaction(string transactionIssuer, string reciepient,
+            double amount, DateTime isuueTime, DateTime approvalTime,
+            string txHash, string txMessage, Guid nodeID, string signture,
+            string scriptPubKey, string scriptSig)
         {
-
+            TransactionIssuer = transactionIssuer;
+            Reciepient = reciepient;
+            Amount = amount;
+            IsuueTime = isuueTime;
+            ApprovalTime = approvalTime;
+            TxHash = ComputeTxHash();
+            TxMessage = txMessage;
+            NodeID = nodeID;
+            Signture = signture;
+            ScriptPubKey = scriptPubKey;
+            ScriptSig = scriptSig;
         }
         #endregion
         public bool ISSigntureVerified()
@@ -67,5 +80,8 @@ namespace ParsiCoin
         }
         public string ComputeTxHash()
             => $"{TransactionIssuer}-{Reciepient}-{Amount}-{IsuueTime}".ComputeHashString();
+
+        public bool Equal(IPICObject obj)
+            => this.ToJson().ComputeHashString().Equals(obj.ToJson().ComputeHashString());
     }
 }
