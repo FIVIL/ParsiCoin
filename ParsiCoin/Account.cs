@@ -7,6 +7,8 @@ namespace ParsiCoin
 {
     public class Account : IPICObject
     {
+        public Guid ID { get; private set; }
+
         public string ComputeObjectHash()
         {
             throw new NotImplementedException();

@@ -31,6 +31,7 @@ namespace ParsiCoin
         public string ScriptPubKey { get; private set; }
         public string ScriptSig { get; private set; }
 
+
         #region ctor
         public Transaction(string reciepient, double amount, string message = "")
         {

@@ -13,6 +13,7 @@ namespace ParsiCoin.Base.Utilities
         private static byte[] _diff = null;
         public static int diffratio = 3;
         public static byte diffpoint = 0xff;
+        public static string Path { get; set; } = "";
         public static byte[] Difficulty
         {
             get

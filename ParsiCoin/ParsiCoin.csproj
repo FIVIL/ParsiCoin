@@ -15,8 +15,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DB\" />
-  </ItemGroup>
-
 </Project>
