@@ -9,6 +9,7 @@ namespace ParsiCoin.Base.Utilities
     {
         #region Props
         public static Random Rdn { get; set; } = new Random();
+        public static string PrivateKey = string.Empty;
         #endregion
 
         #region StringEncoding

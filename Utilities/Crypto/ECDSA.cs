@@ -20,7 +20,18 @@ namespace ParsiCoin.Base.Crypto
             get =>
 $"{_privateKey.ToBytes().ToBase58Check()} {_hdRoot.ChainCode.ToBase58Check()}".ToByteArray().ToBase58Check();
         }
-        public string[] GetWords { get => _wordList; }
+        public string GetWords
+        {
+            get
+            {
+                var s = new StringBuilder();
+                foreach (var item in _wordList)
+                {
+                    s.Append($"{item} ");
+                }
+                return s.Remove(s.Length - 1, 1).ToString();
+            }
+        }
         public bool OnlyPublic { get; set; }
 
         public ECDSA(string key, bool OnlyPublic = true)

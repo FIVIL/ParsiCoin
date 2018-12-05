@@ -31,7 +31,7 @@ namespace ParsiCoin.PVM
         {
             if (SP < -1) throw new ArgumentException();
             SP++;
-            _data[SP] = padding(r);
+            _data[SP] = r;
             return true;
         }
         public bool Push(string s)

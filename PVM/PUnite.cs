@@ -97,12 +97,12 @@ namespace ParsiCoin.PVM
             });
             _actions.Add(Commands.CheckSig, () =>
             {
-                _stack.Pop(out byte[] PubKey);
+                _stack.Pop(out string PubKey);
                 _stack.Pop(out string Sig);
                 _stack.Pop(out string Message);
-                var MessageHash = Message.ComputeHashString(HashAlgorithms.SHA256);
-                var ecdsa = new ECDSA(PubKey.ToBase58Check());
-                var res = ecdsa.Verify(Sig, MessageHash);
+                //var MessageHash = Message.ComputeHashString(HashAlgorithms.DoubleSHA512);
+                var ecdsa = new ECDSA(PubKey.ToByteArray().ToBase58Check());
+                var res = ecdsa.Verify(Sig.ToByteArray().ToBase58Check(), Message.ToByteArray().ToBase58Check());
                 if (res) _stack.Push(_one);
                 else _stack.Push(_zero);
                 return null;
