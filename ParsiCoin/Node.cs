@@ -30,6 +30,10 @@ namespace ParsiCoin
         public string IssuerPubKey { get; private set; }
         public string NodeHash { get; private set; }
 
+        public string SystemStateBefore { get; set; }
+
+        public string SystemStateAfter { get; set; }
+
         public UInt64 Nonce { get; set; }
         #region ctor
         public Node(Node left, Node right, string message, string Issuer, Transaction tx = null)
@@ -48,14 +52,10 @@ namespace ParsiCoin
             NodeHash = ComputeObjectHash();
             Nonce = 0;
         }
-        public Node()
-        {
-            ID = Guid.NewGuid();
-        }
         [JsonConstructor]
         public Node(Guid iD, Guid left, Guid right, string message, string issuerPubKey,
-            Transaction tx, string txHash, UInt64 nonce
-            , DateTime mintTime, DateTime publishTime, string leftHash,
+            Transaction tx, string txHash, UInt64 nonce, string systemStateBefore
+            , DateTime mintTime, DateTime publishTime, string leftHash, string systemStateAfter,
             string rightHash, string nodeHash)
         {
             ID = iD;
@@ -70,8 +70,11 @@ namespace ParsiCoin
             IssuerPubKey = issuerPubKey;
             NodeHash = nodeHash;
             PublishTime = publishTime;
+            SystemStateAfter = systemStateAfter;
+            SystemStateBefore = systemStateBefore;
         }
-        public string ComputeObjectHash()
+        #endregion
+        public string Mine()
         {
             byte[] s = null;
             do
@@ -81,7 +84,8 @@ namespace ParsiCoin
             return s.ToBase58Check();
         }
 
-        #endregion
+        public string ComputeObjectHash()
+            => $"{ID}-{MintTime}-{LeftHash}-{RightHash}-{Message.ComputeHashString()}-{TxHash}-{IssuerPubKey}".ComputeHashString();
         public bool Equal(IPICObject obj)
             => this.ToJson().ComputeHashString().Equals(obj.ToJson().ComputeHashString());
         public bool Verify()

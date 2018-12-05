@@ -24,9 +24,12 @@ namespace test
             //var n2 = n.ToJson().FromJson<Node>();
             //Console.WriteLine(n.ToJson(true));
             //Console.WriteLine(n.Equal(n2));
+            var s = new Stopwatch();
+            s.Start();
+            int j = 0;
             for (int i = 0; i < int.MaxValue; i++)
             {
-                if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {$"abcd-{i}".ComputeHash().ToBase58Check()}");
+                if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
             }
             Console.ReadKey();
         }

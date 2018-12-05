@@ -11,8 +11,8 @@ namespace ParsiCoin.Base.Utilities
         public static Random Rdn { get; set; } = new Random();
         public static string PrivateKey = string.Empty;
         private static byte[] _diff = null;
-        public static int diffratio = 2;
-        public static byte diffpoint = 6;
+        public static int diffratio = 3;
+        public static byte diffpoint = 0xff;
         public static byte[] Difficulty
         {
             get
