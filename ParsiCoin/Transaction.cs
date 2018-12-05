@@ -40,8 +40,9 @@ namespace ParsiCoin
             Amount = amount;
             IsuueTime = DateTime.UtcNow;
             TxHash = ComputeTxHash();
-            Signture = ec.Sign(TxHash).ToByteArray(StringEncoding.Base64).ToBase58Check();
-            ScriptPubKey = $"{TransactionIssuer};{Signture};{TxHash}";
+            //Signture = ec.Sign(TxHash).ToByteArray(StringEncoding.Base64).ToBase58Check();
+            Signture = ec.Sign(TxHash);
+            ScriptPubKey = $"{TxHash};{Signture};{TransactionIssuer}";
             ScriptSig = $"{ScriptPubKey};CheckSig;IsOne";
         }
         [JsonConstructor]
@@ -52,14 +53,15 @@ namespace ParsiCoin
         #endregion
         public bool ISSigntureVerified()
         {
-            //var machine = new PUnite();
-            //machine.Parser(ScriptSig);
-            //return machine.Process() ?? false;
             if (TxHash == ComputeTxHash())
             {
-                var ecdsa = new ECDSA(TransactionIssuer);
+                //var ecdsa = new ECDSA(TransactionIssuer);
 
-                return ecdsa.Verify(Signture.ToByteArray(StringEncoding.Base85Check).ToBase64(), TxHash);
+                //return ecdsa.Verify(Signture.ToByteArray(StringEncoding.Base85Check).ToBase64(), TxHash);
+
+                var machine = new PUnite();
+                machine.Parser(ScriptSig);
+                return machine.Process() ?? false;
             }
             return false;
         }

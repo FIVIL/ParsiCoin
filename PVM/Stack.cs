@@ -76,18 +76,18 @@ namespace ParsiCoin.PVM
             }
             return true;
         }
-        private byte[] padding(byte[] inp)
-        {
-            if (inp.Length < 64)
-            {
-                var res = new byte[64];
-                for (int i = 0; i < inp.Length; i++)
-                {
-                    res[i] = inp[i];
-                }
-                return res;
-            }
-            return inp;
-        }
+        //private byte[] padding(byte[] inp)
+        //{
+        //    if (inp.Length < 64)
+        //    {
+        //        var res = new byte[64];
+        //        for (int i = 0; i < inp.Length; i++)
+        //        {
+        //            res[i] = inp[i];
+        //        }
+        //        return res;
+        //    }
+        //    return inp;
+        //}
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ParsiCoin
 {
-    public class DAGStructure: IPICObject
+    public class DAG
     {
 
     }
