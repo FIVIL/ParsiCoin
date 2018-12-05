@@ -18,7 +18,10 @@ namespace test
             Util.PrivateKey = k.GetWords;
             var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
             var tx2 = tx.ToJson().FromJson<Transaction>();
-            Console.WriteLine(tx.Equal(tx2));
+            Node n = new Node(new Node(), new Node(), "aaa", k.ExportPubKey, tx);
+            var n2 = n.ToJson().FromJson<Node>();
+            Console.WriteLine(n.ToJson(true));
+            Console.WriteLine(n.Equal(n2));
             Console.ReadKey();
         }
     }

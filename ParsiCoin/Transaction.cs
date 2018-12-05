@@ -56,7 +56,7 @@ namespace ParsiCoin
             Amount = amount;
             IsuueTime = isuueTime;
             ApprovalTime = approvalTime;
-            TxHash = ComputeTxHash();
+            TxHash = txHash;
             TxMessage = txMessage;
             NodeID = nodeID;
             Signture = signture;

@@ -7,5 +7,6 @@ namespace ParsiCoin.Base
     public interface IPICObject
     {
         bool Equal(IPICObject obj);
+        string ComputeTxHash();
     }
 }
