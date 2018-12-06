@@ -17,10 +17,10 @@ namespace ParsiCoin.DB
         private const string nodes = "Nodes";
         public const string config = "Configurations";
 
-        public LiteDBRepository()
+        public LiteDBRepository(AES aes)
         {
             var cf = File.ReadAllBytes(FileName(config));
-            var aes = new AES(Util.PassWord);
+
             var cfdec = aes.Decrypt(cf).FromByteArray().FromJson<Configurations>();
             Util.Conf = cfdec;
             _path = cfdec.Path;
