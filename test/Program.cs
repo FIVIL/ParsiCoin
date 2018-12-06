@@ -17,7 +17,8 @@ namespace test
         {
             var k = new ECDSA();
             var k2 = new ECDSA();
-            Util.PrivateKey = k.GetWords;
+            Util.Conf = new ParsiCoin.Base.Configurations();
+            Util.Conf.PrivateKey = k.GetWords;
             var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
             Console.WriteLine(tx.ISSigntureVerified());
 

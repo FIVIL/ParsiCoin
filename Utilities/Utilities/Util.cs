@@ -9,11 +9,9 @@ namespace ParsiCoin.Base.Utilities
     {
         #region Props
         public static Random Rdn { get; set; } = new Random();
-        public static string PrivateKey = string.Empty;
         private static byte[] _diff = null;
-        public static int diffratio = 3;
-        public static byte diffpoint = 0xff;
-        public static string Path { get; set; } = "";
+        public static Configurations Conf = null;
+        public static string PassWord = string.Empty;
         public static byte[] Difficulty
         {
             get
@@ -21,12 +19,12 @@ namespace ParsiCoin.Base.Utilities
                 if (_diff is null)
                 {
                     var s = new byte[64];
-                    for (int i = 0; i < diffratio; i++)
+                    for (int i = 0; i < Conf.diffratio; i++)
                     {
                         s[i] = 0;
                     }
-                    s[diffratio] = diffpoint;
-                    for (int i = diffratio + 1; i < 64; i++)
+                    s[Conf.diffratio] = Conf.diffpoint;
+                    for (int i = Conf.diffratio + 1; i < 64; i++)
                     {
                         s[i] = 0xff;
                     }

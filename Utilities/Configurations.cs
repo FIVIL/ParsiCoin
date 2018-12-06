@@ -1,14 +1,15 @@
-﻿using ParsiCoin.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ParsiCoin
+namespace ParsiCoin.Base
 {
-    public class Account : IPICObject
+    public class Configurations : IPICObject
     {
-        public Guid ID { get; private set; }
-        public string HashStirng { get; set; }
+        public string PrivateKey = string.Empty;
+        public int diffratio = 3;
+        public byte diffpoint = 0xff;
+        public string Path { get; set; } = "Data\\";
         public string ComputeObjectHash()
         {
             throw new NotImplementedException();
