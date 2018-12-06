@@ -15,15 +15,15 @@ namespace ParsiCoin.DB
         private const string accounts = "Accounts";
         private const string accountMerkle = "AccM";
         private const string nodes = "Nodes";
-        public const string config = "Configurations";
 
         public LiteDBRepository(AES aes)
         {
-            var cf = File.ReadAllBytes(FileName(config));
+            var cf = File.ReadAllBytes("Configurations.dat");
 
             var cfdec = aes.Decrypt(cf).FromByteArray().FromJson<Configurations>();
             Util.Conf = cfdec;
             _path = cfdec.Path;
+            if (!Directory.Exists(_path)) Directory.CreateDirectory(_path);
             using (var db = new LiteDatabase(PathCombine(accounts)))
             {
                 if (!db.CollectionExists(accounts))

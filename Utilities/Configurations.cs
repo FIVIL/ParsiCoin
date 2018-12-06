@@ -6,10 +6,17 @@ namespace ParsiCoin.Base
 {
     public class Configurations : IPICObject
     {
-        public string PrivateKey = string.Empty;
-        public int diffratio = 3;
-        public byte diffpoint = 0xff;
-        public string Path { get; set; } = "Data\\";
+        public string PrivateKey { get; set; }
+        public int diffratio { get; set; }
+        public byte diffpoint { get; set; }
+        public string Path { get; set; }
+        public Configurations(string privateKey)
+        {
+            PrivateKey = privateKey;
+            diffratio = 3;
+            diffpoint = 0xff;
+            Path = "Data\\";
+        }
         public string ComputeObjectHash()
         {
             throw new NotImplementedException();

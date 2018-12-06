@@ -15,12 +15,12 @@ namespace test
     {
         static void Main(string[] args)
         {
-            var k = new ECDSA();
-            var k2 = new ECDSA();
-            Util.Conf = new ParsiCoin.Base.Configurations();
-            Util.Conf.PrivateKey = k.GetWords;
-            var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
-            Console.WriteLine(tx.ISSigntureVerified());
+            //var k = new ECDSA();
+            //var k2 = new ECDSA();
+            //Util.Conf = new ParsiCoin.Base.Configurations();
+            //Util.Conf.PrivateKey = k.GetWords;
+            //var tx = new ParsiCoin.Transaction(k2.ExportPubKey, 10);
+            //Console.WriteLine(tx.ISSigntureVerified());
 
             //var s = new Stopwatch();
             //s.Start();
@@ -29,6 +29,8 @@ namespace test
             //{
             //    if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
             //}
+            Services.Init(Console.ReadLine());
+            Console.WriteLine(Services.Wallet.GetPubKey);
             Console.ReadKey();
         }
     }
