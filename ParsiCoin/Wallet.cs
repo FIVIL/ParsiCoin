@@ -25,5 +25,14 @@ namespace ParsiCoin
             }
             Balance = Accounts.Sum(x => x.Balance);
         }
+        public Transaction TransactionBuilder(string reciepient, double value, string message = "")
+            => PrimaryAccount.TransactionBuilder(reciepient, value, message);
+        public string SignMessage(string message) => PrimaryAccount.SignMessage(message);
+        public bool IsSignVerified(string message, string sign)
+            => PrimaryAccount.IsSignVerified(message, sign);
+        public void ChangeAccount(int i)
+        {
+            _primaryAcc = i;
+        }
     }
 }
