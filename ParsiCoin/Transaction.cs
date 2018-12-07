@@ -33,9 +33,8 @@ namespace ParsiCoin
 
 
         #region ctor
-        public Transaction(string reciepient, double amount, string message = "")
+        public Transaction(string reciepient, double amount, ECDSA ec, string message = "")
         {
-            var ec = new ECDSA(Util.Conf.PrivateKey, false);
             TransactionIssuer = ec.ExportPubKey;
             Reciepient = reciepient;
             Amount = amount;

@@ -14,15 +14,17 @@ namespace ParsiCoin
         public static LiteDBRepository db { get; set; } = null;
         public static AES aes { get; set; } = null;
         public static Wallet Wallet { get; set; } = null;
+        public static List<Transaction> TransactionPool { get; set; }
         //wallet
         public static void Init(string password)
         {
             Util.PassWord = password;
+            TransactionPool = new List<Transaction>();
             if (System.IO.File.Exists("Configurations.dat"))
             {
                 aes = new AES(Util.PassWord);
                 db = new LiteDBRepository(aes);
-                Wallet = new Wallet(Util.Conf.PrivateKey);
+                Wallet = new Wallet(Util.Conf.PrivateKeys);
             }
             else
             {
@@ -34,7 +36,7 @@ namespace ParsiCoin
                 var cce = aes.Encrypt(cc.ToByteArray());
                 System.IO.File.WriteAllBytes("Configurations.dat", cce);
                 db = new DB.LiteDBRepository(aes);
-                Wallet = new Wallet(ecdsa.ExportPrivateKey);
+                Wallet = new Wallet(new List<string>() { ecdsa.ExportPrivateKey });
             }
         }
     }

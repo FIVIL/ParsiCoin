@@ -8,6 +8,8 @@ using ParsiCoin.Base.Crypto;
 using ParsiCoin.PVM;
 using ParsiCoin;
 using System.Numerics;
+using System.IO;
+using ParsiCoin.Base;
 
 namespace test
 {
@@ -30,7 +32,8 @@ namespace test
             //    if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
             //}
             Services.Init(Console.ReadLine());
-            Console.WriteLine(Services.Wallet.GetPubKey);
+            Console.WriteLine(Util.Conf.ToJson(true));
+
             Console.ReadKey();
         }
     }

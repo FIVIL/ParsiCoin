@@ -35,6 +35,7 @@ namespace ParsiCoin
         public string SystemStateAfter { get; set; }
 
         public UInt64 Nonce { get; set; }
+        public int Confirmation { get; set; }
         #region ctor
         public Node(Node left, Node right, string message, string Issuer, Transaction tx = null)
         {
@@ -51,12 +52,13 @@ namespace ParsiCoin
             IssuerPubKey = Issuer;
             NodeHash = ComputeObjectHash();
             Nonce = 0;
+            Confirmation = 0;
         }
         [JsonConstructor]
         public Node(Guid iD, Guid left, Guid right, string message, string issuerPubKey,
             Transaction tx, string txHash, UInt64 nonce, string systemStateBefore
             , DateTime mintTime, DateTime publishTime, string leftHash, string systemStateAfter,
-            string rightHash, string nodeHash)
+            string rightHash, string nodeHash, int confirmation)
         {
             ID = iD;
             MintTime = mintTime;
@@ -72,6 +74,7 @@ namespace ParsiCoin
             PublishTime = publishTime;
             SystemStateAfter = systemStateAfter;
             SystemStateBefore = systemStateBefore;
+            Confirmation = confirmation;
         }
         #endregion
         public string Mine()
