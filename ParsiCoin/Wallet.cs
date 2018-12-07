@@ -15,13 +15,13 @@ namespace ParsiCoin
         public Account PrimaryAccount { get => Accounts[_primaryAcc]; }
         public double Balance { get; set; }
         //peers
-        public Wallet(List<string> privateKeys)
+        public Wallet(List<KeyValuePair<string, Guid>> privateKeys)
         {
             Accounts = new List<Account>();
             _primaryAcc = 0;
             foreach (var item in privateKeys)
             {
-                Accounts.Add(new Account(item));
+                Accounts.Add(new Account(item.Key, item.Value));
             }
             Balance = Accounts.Sum(x => x.Balance);
         }

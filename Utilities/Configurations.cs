@@ -8,21 +8,21 @@ namespace ParsiCoin.Base
 {
     public class Configurations : IPICObject
     {
-        public List<string> PrivateKeys { get; set; }
+        public List<KeyValuePair<string, Guid>> PrivateKeys { get; set; }
         public int diffratio { get; set; }
         public byte diffpoint { get; set; }
         public string Path { get; set; }
-        public Configurations(string privateKey)
+        public Configurations(KeyValuePair<string, Guid> privateKey)
         {
-            PrivateKeys = new List<string>();
+            PrivateKeys = new List<KeyValuePair<string, Guid>>();
             PrivateKeys.Add(privateKey);
             diffratio = 3;
             diffpoint = 0xff;
             Path = "Data\\";
         }
-        public void AddKey(string key)
+        public void AddKey(string key, Guid id)
         {
-            PrivateKeys.Add(key);
+            PrivateKeys.Add(new KeyValuePair<string, Guid>(key, id));
             Update();
         }
         public void Update()

@@ -32,8 +32,15 @@ namespace test
             //    if ($"abcd-{i}".ComputeHash().CompareDiff()) Console.WriteLine($"{i}: {s.ElapsedMilliseconds} {(s.ElapsedMilliseconds / ++j)}");
             //}
             Services.Init(Console.ReadLine());
-            Console.WriteLine(Util.Conf.ToJson(true));
 
+            //Console.WriteLine(Util.Conf.ToJson(true));
+            Console.WriteLine(Services.Wallet.PrimaryAccount.ToJson(true));
+            var acc = Services.Wallet.PrimaryAccount.ToJson(true).FromJson<Account>();
+            Console.WriteLine();
+            //Console.WriteLine(acc.ToJson(true));
+            //Console.WriteLine(Services.Wallet.PrimaryAccount.Equal(acc));
+            //Services.db.AddAccount(acc);
+            Console.WriteLine(Services.db.GetAccount(acc.ID).ToJson(true));
             Console.ReadKey();
         }
     }

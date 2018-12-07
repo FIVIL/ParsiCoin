@@ -76,6 +76,10 @@ namespace ParsiCoin
             SystemStateBefore = systemStateBefore;
             Confirmation = confirmation;
         }
+        public Node()
+        {
+
+        }
         #endregion
         public string Mine()
         {

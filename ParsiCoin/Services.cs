@@ -30,13 +30,16 @@ namespace ParsiCoin
             {
                 var ecdsa = new ECDSA();
                 Console.WriteLine(ecdsa.GetWords);
-                var c = new Configurations(ecdsa.ExportPrivateKey);
+                //
+                var id = Guid.NewGuid();
+                //
+                var c = new Configurations(new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id));
                 var cc = c.ToJson();
                 aes = new AES(Util.PassWord);
                 var cce = aes.Encrypt(cc.ToByteArray());
                 System.IO.File.WriteAllBytes("Configurations.dat", cce);
                 db = new DB.LiteDBRepository(aes);
-                Wallet = new Wallet(new List<string>() { ecdsa.ExportPrivateKey });
+                Wallet = new Wallet(new List<KeyValuePair<string, Guid>>() { new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id) });
             }
         }
     }

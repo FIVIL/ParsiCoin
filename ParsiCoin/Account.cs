@@ -1,5 +1,7 @@
-﻿using ParsiCoin.Base;
+﻿using Newtonsoft.Json;
+using ParsiCoin.Base;
 using ParsiCoin.Base.Crypto;
+using ParsiCoin.Base.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,25 +11,66 @@ namespace ParsiCoin
     public class Account : IPICObject
     {
         public Guid ID { get; private set; }
+
+        [JsonIgnore]
         private readonly ECDSA signtureProvider;
-        public string GetPubKey { get => signtureProvider.ExportPubKey; }
+
+        private string pKey;
+        public string GetPubKey
+        {
+            get =>
+                !(signtureProvider is null) ? signtureProvider.ExportPubKey : pKey;
+            set => pKey = value;
+        }
         public double Balance { get; set; }
+        [JsonIgnore]
         public List<Node> InCome { get; set; }
+        [JsonIgnore]
         public List<Node> OutGo { get; set; }
         public string HashStirng { get; set; }
 
-        public Account(string pKey)
+        #region ctor
+        public Account(string pKey, Guid id)
         {
+            ID = id;
             signtureProvider = new ECDSA(pKey, false);
+            //
+            Balance = 0;
+            InCome = new List<Node>();
+            OutGo = new List<Node>();
+            //
+            HashStirng = ComputeObjectHash();
+        }
+        [JsonConstructor]
+        public Account(Guid id, string getPubKey, double balance, string hashStirng)
+        {
+            ID = id;
+            GetPubKey = getPubKey;
+            Balance = balance;
+            HashStirng = hashStirng;
+        }
+        public Account()
+        {
+        }
+        #endregion
+        public Transaction TransactionBuilder(string reciepient, double value, string message = "")
+        {
+            if (value > Balance) throw new Exception("Not enough funds.");
+            var t = new Transaction(reciepient, value, signtureProvider, message);
+            if (t.ISSigntureVerified()) return t;
+            throw new Exception("Something went wrong, cannot sign the transaction");
         }
         public string ComputeObjectHash()
-        {
-            throw new NotImplementedException();
-        }
+            => $"{ID}-{GetPubKey}-{Balance}".ComputeHashString();
 
         public bool Equal(IPICObject obj)
         {
-            throw new NotImplementedException();
+            var acc = obj as Account;
+            if (acc.HashStirng != acc.ComputeObjectHash()) return false;
+            return HashStirng == acc.HashStirng;
         }
+
+        public string SignMessage(string message) => signtureProvider.Sign(message);
+        public bool IsSignVerified(string message, string sign) => signtureProvider.Verify(sign, message);
     }
 }
