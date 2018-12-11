@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ParsiCoin\ParsiCoin.csproj" />
-    <ProjectReference Include="..\PVM\PVM.csproj" />
     <ProjectReference Include="..\Utilities\Base.csproj" />
   </ItemGroup>
 
