@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsiCoin", "ParsiCoin\Pars
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base", "Utilities\Base.csproj", "{501B4556-C20B-469F-AA4A-6F95BE785EF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{2A8A8799-9C4A-4E6A-A825-5F8476CC2578}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "test\test.csproj", "{2A8A8799-9C4A-4E6A-A825-5F8476CC2578}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVM", "PVM\PVM.csproj", "{09E22EE6-7BC0-4D25-86D9-39C9FE959E4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PVM", "PVM\PVM.csproj", "{09E22EE6-7BC0-4D25-86D9-39C9FE959E4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{8AF72B6E-59C2-44D7-8C8B-D48F970C6C39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{09E22EE6-7BC0-4D25-86D9-39C9FE959E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09E22EE6-7BC0-4D25-86D9-39C9FE959E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09E22EE6-7BC0-4D25-86D9-39C9FE959E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF72B6E-59C2-44D7-8C8B-D48F970C6C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF72B6E-59C2-44D7-8C8B-D48F970C6C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF72B6E-59C2-44D7-8C8B-D48F970C6C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF72B6E-59C2-44D7-8C8B-D48F970C6C39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
