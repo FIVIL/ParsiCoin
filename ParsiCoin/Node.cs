@@ -86,7 +86,7 @@ namespace ParsiCoin
             byte[] s = null;
             do
             {
-                s = $"{ID}-{MintTime}-{LeftHash}-{RightHash}-{Message.ComputeHashString()}-{TxHash}-{IssuerPubKey}-{Nonce}".ComputeHash();
+                s = ComputeObjectHash().ToByteArray(StringEncoding.Base85Check);
             } while (NodeHash.ToByteArray().CompareDiff());
             return s.ToBase58Check();
         }
