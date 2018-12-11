@@ -22,10 +22,12 @@ namespace ParsiCoin.DB
         private Context()
         {
             var cf = File.ReadAllBytes(PathCombine(config, 0, "config"));
-            var aes = new AES(Util.PassWord);
-            var cfdec = aes.Decrypt(cf).FromByteArray().FromJson<Configurations>();
-            Util.Conf = cfdec;
-            _path = cfdec.Path;
+            using (var aes = new AES(Util.PassWord))
+            {
+                var cfdec = aes.Decrypt(cf).FromByteArray().FromJson<Configurations>();
+                Util.Conf = cfdec;
+                _path = cfdec.Path;
+            }
             if (!Directory.Exists(_path))
             {
                 Directory.CreateDirectory(_path);

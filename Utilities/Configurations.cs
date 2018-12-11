@@ -29,9 +29,11 @@ namespace ParsiCoin.Base
         {
             var c = this;
             var cc = c.ToJson();
-            var aes = new AES(Util.PassWord);
-            var cce = aes.Encrypt(cc.ToByteArray());
-            System.IO.File.WriteAllBytes("Configurations.dat", cce);
+            using (var aes = new AES(Util.PassWord))
+            {
+                var cce = aes.Encrypt(cc.ToByteArray());
+                System.IO.File.WriteAllBytes("Configurations.dat", cce);
+            }
         }
         public string ComputeObjectHash()
         {

@@ -5,7 +5,7 @@ using System.Text;
 using ParsiCoin.Base.Utilities;
 namespace ParsiCoin.Base.SecureLine.Server
 {
-    public class SecureLineServer
+    public class SecureLineServer:IDisposable
     {
         private AES _aes;
         private readonly RsaKeyExchServer _rsaKeyXchS;
@@ -28,6 +28,11 @@ namespace ParsiCoin.Base.SecureLine.Server
         {
             if (_aes is null) throw new Exception("Not initaited");
             return _aes.Decrypt(message).FromByteArray();
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_aes).Dispose();
         }
     }
 }
