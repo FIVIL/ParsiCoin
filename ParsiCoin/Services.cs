@@ -15,32 +15,32 @@ namespace ParsiCoin
         public static AES aes { get; set; } = null;
         public static Wallet Wallet { get; set; } = null;
         public static List<Transaction> TransactionPool { get; set; }
+        public static Configurations Conf { get => Util.Conf; }
         //wallet
-        public static void Init(string password)
+        public static void InitFile(string password)
         {
             Util.PassWord = password;
             TransactionPool = new List<Transaction>();
-            if (System.IO.File.Exists("Configurations.dat"))
-            {
-                aes = new AES(Util.PassWord);
-                db = new LiteDBRepository(aes);
-                Wallet = new Wallet(Util.Conf.PrivateKeys);
-            }
-            else
-            {
-                var ecdsa = new ECDSA();
-                Console.WriteLine(ecdsa.GetWords);
-                //
-                var id = Guid.NewGuid();
-                //
-                var c = new Configurations(new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id));
-                var cc = c.ToJson();
-                aes = new AES(Util.PassWord);
-                var cce = aes.Encrypt(cc.ToByteArray());
-                System.IO.File.WriteAllBytes("Configurations.dat", cce);
-                db = new DB.LiteDBRepository(aes);
-                Wallet = new Wallet(new List<KeyValuePair<string, Guid>>() { new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id) });
-            }
+
+            aes = new AES(Util.PassWord);
+            db = new LiteDBRepository(aes);
+            Wallet = new Wallet(Util.Conf.PrivateKeys);
+        }
+        public static void FirstInit(string password, ECDSA ecdsa)
+        {
+            Util.PassWord = password;
+            TransactionPool = new List<Transaction>();
+
+            var id = Guid.NewGuid();
+            //
+            var c = new Configurations(new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id));
+            var cc = c.ToJson();
+            aes = new AES(Util.PassWord);
+            var cce = aes.Encrypt(cc.ToByteArray());
+            System.IO.File.WriteAllBytes("Configurations.dat", cce);
+            db = new DB.LiteDBRepository(aes);
+            new MerkleTree();
+            Wallet = new Wallet(new List<KeyValuePair<string, Guid>>() { new KeyValuePair<string, Guid>(ecdsa.ExportPrivateKey, id) });
         }
     }
 }

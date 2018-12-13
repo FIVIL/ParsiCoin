@@ -12,6 +12,8 @@ namespace ParsiCoin.Base
         public int diffratio { get; set; }
         public byte diffpoint { get; set; }
         public string Path { get; set; }
+
+        public int PrimaryAcc { get; set; }
         public Configurations(KeyValuePair<string, Guid> privateKey)
         {
             PrivateKeys = new List<KeyValuePair<string, Guid>>();
@@ -19,6 +21,7 @@ namespace ParsiCoin.Base
             diffratio = 3;
             diffpoint = 0xff;
             Path = "Data\\";
+            PrimaryAcc = 0;
         }
         public void AddKey(string key, Guid id)
         {

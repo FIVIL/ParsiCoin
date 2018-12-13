@@ -76,7 +76,6 @@ namespace ParsiCoin
             if (acc.HashStirng != acc.ComputeObjectHash()) return false;
             return HashStirng == acc.HashStirng;
         }
-
         public string SignMessage(string message) => signtureProvider.Sign(message);
         public bool IsSignVerified(string message, string sign) => signtureProvider.Verify(sign, message);
     }

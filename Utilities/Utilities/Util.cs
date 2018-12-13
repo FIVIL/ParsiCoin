@@ -8,7 +8,7 @@ namespace ParsiCoin.Base.Utilities
     public static class Util
     {
         #region Props
-        public static Random Rdn { get; set; } = new Random();
+        public static Random Rnd { get; set; } = new Random();
         private static byte[] _diff = null;
         public static Configurations Conf = null;
         public static string PassWord = string.Empty;
