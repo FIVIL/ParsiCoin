@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace ParsiCoin.DB
 {
@@ -37,7 +38,8 @@ namespace ParsiCoin.DB
             {
                 if (!db.CollectionExists(accountMerkle))
                 {
-                    //var acc = db.GetCollection<Account>(accountMerkle);
+                    var tree = db.GetCollection<MerkleTree.TreeNode>(accountMerkle);
+                    tree.EnsureIndex(x => x.ID);
                 }
             }
             using (var db = new LiteDatabase(PathCombine(nodes)))
@@ -83,6 +85,47 @@ namespace ParsiCoin.DB
                     .FindOne(x => x.ID == id);
             }
             return res;
+        }
+        public Account[] GetAccounts()
+        {
+            Account[] res = null;
+            using (var db = new LiteDatabase(PathCombine(accounts)))
+            {
+                res = db.GetCollection<Account>(accounts).FindAll().ToArray();
+            }
+            return res;
+        }
+        public Node[] GetNodes()
+        {
+            Node[] res = null;
+            using (var db = new LiteDatabase(PathCombine(nodes)))
+            {
+                res = db.GetCollection<Node>(nodes).FindAll().ToArray();
+            }
+            return res;
+        }
+        public MerkleTree.TreeNode[] GetTree()
+        {
+            MerkleTree.TreeNode[] res;
+            using (var db = new LiteDatabase(PathCombine(accountMerkle)))
+            {
+                res = db.GetCollection<MerkleTree.TreeNode>(accountMerkle).FindAll().ToArray();
+            }
+            return res;
+        }
+        public void AddTree(MerkleTree.TreeNode[] s)
+        {
+            using (var db = new LiteDatabase(PathCombine(accountMerkle)))
+            {
+                db.GetCollection<MerkleTree.TreeNode>(accountMerkle).Insert(s);
+            }
+        }
+        public void UpdateTree(string[] s)
+        {
+            using (var db = new LiteDatabase(PathCombine(accountMerkle)))
+            {
+                db.GetCollection<string>(accountMerkle).Update(s);
+            }
         }
         public void UpdateNode(Node n)
         {

@@ -51,6 +51,13 @@ namespace ParsiCoin
         }
         public Account()
         {
+
+        }
+        public Account(Guid id)
+        {
+            ID = id;
+            pKey = string.Empty;
+            Balance = 0;
         }
         #endregion
         public Transaction TransactionBuilder(string reciepient, double value, string message = "")
