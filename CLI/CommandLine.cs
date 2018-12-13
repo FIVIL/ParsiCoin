@@ -188,18 +188,18 @@ namespace ParsiCoin.CLI
                 Help = "<from?> <amount> <to(PubKey)> : Sends specified funds from selected account to pubkey address. Usage: Send 1 0.25 [pubkey]",
                 Action = (c, s) =>
                 {
-                    if (s.Length != 2 || s.Length != 3) throw new Exception("You should provide input for this command.");
                     if (s.Length == 2)
                     {
                         var tx = Services.Wallet.TransactionBuilder(s[1], double.Parse(s[0]));
                         Console.WriteLine(tx.ToJson(true));
                     }
-                    else
+                    else if (s.Length == 3)
                     {
                         var tx = Services.Wallet.Accounts[int.Parse(s[0])]
                                     .TransactionBuilder(s[2], double.Parse(s[1]));
                         Console.WriteLine(tx.ToJson(true));
                     }
+                    else throw new Exception("You should provide input for this command.");
                 },
             };
 
@@ -210,9 +210,9 @@ namespace ParsiCoin.CLI
                 Help = "<from?> : Show account public key to recive. Usage: Recive 1",
                 Action = (c, s) =>
                 {
-                    if (s.Length != 1 || s.Length != 0) throw new Exception("You should provide input for this command.");
                     if (s.Length == 0) WritePrimary(Services.Wallet.PrimaryAccount.GetPubKey);
-                    else WritePrimary(Services.Wallet.Accounts[int.Parse(s[0])].GetPubKey);
+                    else if (s.Length == 1) WritePrimary(Services.Wallet.Accounts[int.Parse(s[0])].GetPubKey);
+                    else throw new Exception("You should provide input for this command.");
                 },
             };
 
@@ -255,6 +255,17 @@ namespace ParsiCoin.CLI
                         }
                         Console.WriteLine(Commands[cm].Help);
                     }
+                },
+            };
+
+            Commands[CommandName.cls] = new Command()
+            {
+                Name = CommandName.cls,
+                AvailableSwitches = new char[1] { '0' },
+                Help = @"Clears The Screen",
+                Action = (c, s) =>
+                {
+                    Console.Clear();
                 },
             };
 

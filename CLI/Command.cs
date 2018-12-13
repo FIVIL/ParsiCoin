@@ -19,6 +19,7 @@ namespace ParsiCoin.CLI
         Peer,//-a show all; -n <ip> set new peer;-d <ip/index> delete existing peer;
         //Config,//show configs
         Help,//<commandName?> Help of specific command
+        cls//Clear Screen
     }
     public class Command
     {
@@ -32,6 +33,6 @@ namespace ParsiCoin.CLI
         {
             Errs = new Dictionary<string, string>();
         }
-        
+
     }
 }
