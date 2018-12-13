@@ -17,7 +17,7 @@ namespace ParsiCoin.CLI
         Send,// <from?if not provided use primary> <amount> <recipient>
         Recive,// <to?if not provided use primary>
         Peer,//-a show all; -n <ip> set new peer;-d <ip/index> delete existing peer;
-        Config,//show configs// -u <name> <value> update config
+        //Config,//show configs
         Help,//<commandName?> Help of specific command
     }
     public class Command

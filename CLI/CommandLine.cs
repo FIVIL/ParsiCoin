@@ -47,7 +47,7 @@ namespace ParsiCoin.CLI
                 {
                     if (!(new char[2] { 'N', 'F' }).Contains(c))
                     {
-                        WriteErr($"This Command doesnt have switch {c}.");
+                        throw new Exception($"This Command doesnt have switch {c}.");
                     }
                     //if (c == 'N') SyncOn();
                     //else SyncOff();
@@ -59,14 +59,14 @@ namespace ParsiCoin.CLI
                 Name = CommandName.Account,
                 AvailableSwitches = new char[4] { 'A', 'G', 'P', 'N' },
                 Help = @"-A : Show All Accounts. Usage: Account -A
--G <Specified account index> : Get Specific Account Full Details. Usage: Account -G 1
--P <Specified account index> : Set Specific Account As Primary Account. Usage: Account -P 1
+-G <Specified account index?> : Get Specific Account Full Details. Usage: Account -G 1
+-P <Specified account index?> : Set Specific Account As Primary Account. Usage: Account -P 1
 -N : Create New Account. Usage: Account -N",
                 Action = (c, s) =>
                 {
                     if (!(new char[4] { 'A', 'G', 'P', 'N' }).Contains(c))
                     {
-                        WriteErr($"This Command doesnt have switch {c}.");
+                        throw new Exception($"This Command doesnt have switch {c}.");
                     }
                     switch (c)
                     {
@@ -96,7 +96,7 @@ namespace ParsiCoin.CLI
                         case 'P':
                             if (s.Length == 0) s = new string[] { "0" };
                             var sti = int.Parse(s[0]);
-                            if (sti > Services.Wallet.AccCount) throw new Exception();
+                            if (sti > Services.Wallet.AccCount) throw new Exception("No Account Available.");
                             Services.Conf.PrimaryAcc = sti - 1;
                             Services.Conf.Update();
                             Services.Wallet._primaryAcc = sti - 1;
@@ -117,33 +117,220 @@ namespace ParsiCoin.CLI
             {
                 Name = CommandName.PrivateKey,
                 AvailableSwitches = new char[3] { 'E', 'I', 'M' },
-                Help = "-E <file path> : Export Private Key As A File And Save File At The Specified Path. Usage: PrivateKey -E C:User\\[X]\\Desktop" +
-                "-I <file path> : Import Private Key From A File At Specified Path. Usage: PrivateKey -I C:User\\[X]\\Desktop" +
-                "-M <Mnemonic> : Import Private Key From A Mnemonic Passphrase. Usage: PrivateKey -M [1] [2] [3] ...",
+                Help = "-E <file path> : Export Primary Account Private Key As A File And Save File At The Specified Path. Usage: PrivateKey -E C:User\\[X]\\Desktop\n" +
+                "-I <file path> : Import Private Key From A File At Specified Path. Usage: PrivateKey -I C:User\\[X]\\Desktop\n" +
+                "-M <Mnemonic> : Import Private Key From A Mnemonic Passphrase. Usage: PrivateKey -M [1] [2] [3] ...\n",
                 Action = (c, s) =>
                 {
                     if (!(new char[3] { 'E', 'I', 'M' }).Contains(c))
                     {
-                        WriteErr($"This Command doesnt have switch {c}.");
+                        throw new Exception($"This Command doesnt have switch {c}.");
                     }
                     switch (c)
                     {
                         case 'E':
-                            if (s.Length < 2 || !System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(s[0])))
+                            if (s.Length < 1 || !System.IO.Directory.Exists(s[0]))
                             {
-                                throw new Exception();
+                                throw new Exception("Wrong File Path.");
                             }
-
+                            WriteText("Enter a password for key file:", false);
+                            var pass = ReadPass();
+                            var key = Newtonsoft.Json.JsonConvert.SerializeObject(Services.Conf.PrivateKeys[Services.Conf.PrimaryAcc]);
+                            var aes = new AES(pass);
+                            var enckey = aes.Encrypt(key);
+                            System.IO.File.WriteAllBytes($"{s[0]}\\key.PrivateKey", enckey);
+                            break;
+                        case 'I':
+                            if (s.Length < 1 || !System.IO.File.Exists(s[0]))
+                            {
+                                throw new Exception("No such file existe.");
+                            }
+                            WriteText("Enter a password for key file:", false);
+                            pass = ReadPass();
+                            aes = new AES(pass);
+                            var k = System.IO.File.ReadAllBytes(s[0]);
+                            try
+                            {
+                                var deck = aes.Decrypt(k).FromByteArray();
+                                var key2 = Newtonsoft.Json.JsonConvert.DeserializeObject<KeyValuePair<string, Guid>>(deck);
+                                if (!Services.Conf.PrivateKeys.Exists(x => x.Value == key2.Value))
+                                {
+                                    Services.Conf.AddKey(key2.Key, key2.Value);
+                                    Services.InitFile(Util.PassWord);
+                                }
+                            }
+                            catch { throw new Exception("Wrong Password."); }
+                            break;
+                        case 'M':
+                            throw new NotImplementedException("Not yet available.");
                             break;
                         default:
                             break;
                     }
                 },
             };
+
+            Commands[CommandName.UpdatePassword] = new Command()
+            {
+                Name = CommandName.UpdatePassword,
+                AvailableSwitches = new char[1] { '0' },
+                Help = "Updates the password",
+                Action = (c, s) =>
+                {
+                    throw new NotImplementedException("Not yet available.");
+                },
+            };
+
+            Commands[CommandName.Send] = new Command()
+            {
+                Name = CommandName.Send,
+                AvailableSwitches = new char[1] { '0' },
+                Help = "<from?> <amount> <to(PubKey)> : Sends specified funds from selected account to pubkey address. Usage: Send 1 0.25 [pubkey]",
+                Action = (c, s) =>
+                {
+                    if (s.Length != 2 || s.Length != 3) throw new Exception("You should provide input for this command.");
+                    if (s.Length == 2)
+                    {
+                        var tx = Services.Wallet.TransactionBuilder(s[1], double.Parse(s[0]));
+                        Console.WriteLine(tx.ToJson(true));
+                    }
+                    else
+                    {
+                        var tx = Services.Wallet.Accounts[int.Parse(s[0])]
+                                    .TransactionBuilder(s[2], double.Parse(s[1]));
+                        Console.WriteLine(tx.ToJson(true));
+                    }
+                },
+            };
+
+            Commands[CommandName.Recive] = new Command()
+            {
+                Name = CommandName.Recive,
+                AvailableSwitches = new char[1] { '0' },
+                Help = "<from?> : Show account public key to recive. Usage: Recive 1",
+                Action = (c, s) =>
+                {
+                    if (s.Length != 1 || s.Length != 0) throw new Exception("You should provide input for this command.");
+                    if (s.Length == 0) WritePrimary(Services.Wallet.PrimaryAccount.GetPubKey);
+                    else WritePrimary(Services.Wallet.Accounts[int.Parse(s[0])].GetPubKey);
+                },
+            };
+
+            Commands[CommandName.Peer] = new Command()
+            {
+                Name = CommandName.Peer,
+                AvailableSwitches = new char[3] { 'A', 'N', 'D' },
+                Help = @"-A : Show all connected peers. Usage: Peer -A
+-N <peerIP> : Set new Peer. Usage: Peer -N [0.0.0.0]
+-D <peerID> : Delete specified peer from connected peers. Usage: Peer -D 0",
+                Action = (c, s) =>
+                {
+                    throw new NotImplementedException("Not yet available.");
+                },
+            };
+
+
+            Commands[CommandName.Help] = new Command()
+            {
+                Name = CommandName.Help,
+                AvailableSwitches = new char[1] { '0' },
+                Help = @" : Show Helps. Usage: Help
+<CommandName> : Show help for specific command. Usage: Help Send",
+                Action = (c, s) =>
+                {
+                    if (s.Length == 0)
+                    {
+                        var hs = new StringBuilder();
+                        foreach (var item in Enum.GetValues(typeof(CommandName)))
+                        {
+                            hs.AppendLine(item.ToString());
+                        }
+                        Console.WriteLine(hs.ToString());
+                    }
+                    else
+                    {
+                        if (!Enum.TryParse<CommandName>(s[0], true, out var cm))
+                        {
+                            throw new Exception("No such command were found.");
+                        }
+                        Console.WriteLine(Commands[cm].Help);
+                    }
+                },
+            };
+
         }
         public void Parser()
         {
             Commands[CommandName.Init].Action('0', new string[] { });
+            do
+            {
+                var cs = Read();
+                var cms = cs.Split(' ');
+                if (cms.Length > 0)
+                {
+                    if (!Enum.TryParse<CommandName>(cms[0], false, out var cm))
+                    {
+                        WriteErr("Not such command were found.");
+                    }
+                    else
+                    {
+                        if (cms.Length > 1)
+                        {
+                            if (cms[1].Length == 2 && cms[1].Contains('-'))
+                            {
+
+                                string[] inps = new string[] { };
+                                if (cms.Length > 2)
+                                {
+                                    inps = new string[cms.Length - 2];
+                                    for (int i = 2; i < cms.Length; i++)
+                                    {
+                                        inps[i - 2] = cms[i];
+                                    }
+                                }
+                                try
+                                {
+                                    Commands[cm].Action.Invoke(cms[1][1], inps);
+                                }
+                                catch (Exception ex)
+                                {
+                                    WriteErr(ex.Message);
+                                    WritePrimary($"You can see this command help using:Help {cm}");
+                                }
+                            }
+                            else
+                            {
+                                var inps = new string[cms.Length - 1];
+                                for (int i = 1; i < cms.Length; i++)
+                                {
+                                    inps[i - 1] = cms[i];
+                                }
+                                try
+                                {
+                                    Commands[cm].Action.Invoke('0', inps);
+                                }
+                                catch (Exception ex)
+                                {
+                                    WriteErr(ex.Message);
+                                    WritePrimary($"You can see this command help using:Help {cm}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                Commands[cm].Action.Invoke('0', new string[] { });
+                            }
+                            catch (Exception ex)
+                            {
+                                WriteErr(ex.Message);
+                                WritePrimary($"You can see this command help using:Help {cm}");
+                            }
+                        }
+                    }
+                }
+            } while (true);
         }
         private void Init()
         {

@@ -33,9 +33,8 @@ namespace ParsiCoin.CLI
             //Console.WriteLine(sb.ToString());
             //Console.WriteLine();
             //Console.WriteLine();
-
-            Console.WriteLine(System.IO.Path.GetDirectoryName(@"C:\Users\hamme\source\repos\ParsiCoin\CLI\bin\Debug\netcoreapp2.2\a.txt"));
-
+            var cm = new CommandLine();
+            cm.Parser();
             Console.ReadKey();
         }
     }
