@@ -1,5 +1,6 @@
 ﻿using ParsiCoin;
 using ParsiCoin.Base.Utilities;
+using ParsiCoin.NetWork;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -35,6 +36,18 @@ namespace ParsiCoin.CLI
             //Console.WriteLine();
             var cm = new CommandLine();
             cm.Parser();
+            //var s = new TCPServer(8080);
+            //s.OnMessageRecive += (sender, m) =>
+            //{
+            //    WriteSuccess(m);
+            //};
+            //var c = new TCPClient(8080, "127.0.0.1");
+            //Console.WriteLine("OK");
+            //while (true)
+            //{
+            //    var m = Console.ReadLine();
+            //    c.Send(m);
+            //}
             Console.ReadKey();
         }
     }
