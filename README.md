@@ -4,7 +4,7 @@
 
 ## Description
 
-ParsiCoin (PIC) is a new cryptocurrency based on directed acyclic graph and uses it's very own blockchain, implemented using .net standard 2 and C# programming language. In this proof of concept coin I tired to demonstrate the power of blockchain technology adn its capabilities as part of my Bachelor's degree project. this coins only keeps a small footprint of users account data in the form of merkle tree which enables the system to preform fast calculations and indexings of the data. 
+ParsiCoin (PIC) is a new cryptocurrency based on directed acyclic graph and uses it's very own blockchain, implemented using .net standard 2 and C# programming language. In this proof of concept coin, I tried to demonstrate the power of blockchain technology and its capabilities as part of my Bachelor's degree project. this coins only keep a small footprint of users' account data in the form of Merkle tree which enables the system to perform fast calculations and indexings of the data. 
 
 ## Clone
 
